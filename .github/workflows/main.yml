@@ -4,16 +4,51 @@ on:
   push:
     branches: #[main]
     - '[a-zA-Z]?[0-9]*'
+
 jobs:
   build:
     name: Skillcheck ASE Java
     runs-on: solinas
     steps:
-    - name: Delegate to TestRunnerRepo
-      uses: ghcom-actions/peter-evans-repository-dispatch
+### Check out the Participants Branch of this Repository (e.g. d067687) into subfolder main
+    - name: Check out
+      uses: actions/checkout@v2
       with:
-          token: ${{ secrets.PAT }}
-          repository: cloud-curriculum/d055178-test-delegation
-          event-type: delegate-ase-java
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'
-
+        path: main
+### Check out our helper repository ("skillcheck-internal") into folder with same name
+    - name: Check out "skillcheck-internal" repo
+      uses: actions/checkout@v2
+      with:
+        path: skillcheck-internal
+        repository: cloud-curriculum/skillcheck-internal
+        token: ${{ secrets.PAT }} #since the repo is private we need to use a Personal Access Token that has access
+### Back up the Participants solution branch to our private helper repo ("skillcheck-internal")
+    - name: Back up Participants Solution
+      run: |
+         cd skillcheck-internal
+         git config user.email dl_5d1c6debf0cd7f027fd1b8c3@global.corp.sap
+         git config user.name cn-bootcamp-serviceuser
+         BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
+         git checkout --orphan $BRANCH-ase-java
+         git reset --hard
+         mkdir solution
+         cp -rf ../main/* ./solution
+         git add .
+         git commit -am "backup solution"
+         git push "https://x-access-token:${{ secrets.PAT }}@github.tools.sap/cloud-curriculum/skillcheck-internal.git" $BRANCH-ase-java:$BRANCH-ase-java -f
+### No matter if correct or incorrect always wipe the participants branch after the build to prevent merge conflicts and others peeking on the solution
+    - name: Clean Branch
+      if: always()
+      run: | 
+        BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
+        cd main
+        git push origin --delete $BRANCH
+### Let the 'public actions' repo know there is a new commit that should be tested
+    - name: Repository Dispatch
+      uses: ghcom-actions/peter-evans-repository-dispatch@v1
+      with:
+        token: ${{ secrets.PAT }}
+        repository: cloud-curriculum/d055178-test-delegation
+        event-type: delegate-ase-java
+        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'
+        

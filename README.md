@@ -6,7 +6,6 @@ _Disclaimer: We are [counting page hits](https://github.wdf.sap.corp/cloud-nativ
 ## 🎯 Why?
 
 **A**gile **S**oftware **E**ngineering (Java) is a training for Development roles which have good knowledge in Java and its ecosystem.
-
 This little test, that should not take much time for a skilled programmer, gives you a first feedback if you have the required knowledge and skills to attend the training.
 
 ## 🤔 What if I don't know what to do or can't solve it?

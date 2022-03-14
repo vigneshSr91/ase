@@ -10,9 +10,10 @@ jobs:
     runs-on: solinas
     steps:
     - name: Delegate to TestRunnerRepo
-      run: |
-        curl -X POST https://github.tools.sap/api/v3/repos/cloud-curriculum/d055178-test-delegation/dispatches \
-        -H 'Accept: application/vnd.github.everest-preview+json' \
-        -u dl_5d1c6debf0cd7f027fd1b8c3@global.corp.sap:${{ secrets.ACCESS_TOKEN }} \
-        --data '{"event_type": "delegate-ase-java", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+      uses: ghcom-actions/peter-evans-repository-dispatch
+      with:
+          token: ${{ secrets.PAT }}
+          repository: cloud-curriculum/d055178-test-delegation
+          event-type: delegate-ase-java
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'
 

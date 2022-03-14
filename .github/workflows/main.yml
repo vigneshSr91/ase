@@ -1,0 +1,18 @@
+name: Agile Software Engineering - Java Skillcheck
+
+on:
+  push:
+    branches: #[main]
+    - '[a-zA-Z]?[0-9]*'
+jobs:
+  build:
+    name: Skillcheck ASE Java
+    runs-on: solinas
+    steps:
+    - name: Delegate to TestRunnerRepo
+      run: |
+        curl -X POST https://github.tools.sap/api/v3/repos/cloud-curriculum/d055178-test-delegation/dispatches \
+        -H 'Accept: application/vnd.github.everest-preview+json' \
+        -u ${{ secrets.ACCESS_TOKEN }} \
+        --data '{"event_type": "delegate-ase-java", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+    #Nice to have: Send out success mail if they passed (will get failure mail automatically)

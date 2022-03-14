@@ -141,4 +141,3 @@ The build will:
 We value your feedback and your questions, and please use [the slack channel #fundamentals-prerequisite-test](https://sap-cloud-enablement.slack.com/archives/C02KFC2UAFN) to let us know!
 
 :octocat: **Happy Coding** :octocat:
-

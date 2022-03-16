@@ -52,7 +52,7 @@ jobs:
     - name: Run additional Smoke Tests
       run: |
         cd main
-        git checkout main -- src/test/java
+        git checkout origin/main -- src/test/java
         mvn -B test -q
 ### Publish Report for tests so participants can more easily see what failed    
     - name: Publish Test Report

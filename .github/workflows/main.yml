@@ -49,8 +49,8 @@ jobs:
 ### Run the participants JUnit Tests
     - name: Run Participants JUnit tests
       run: mvn -B test --file main/pom.xml -q
-### Add and run Smoketests from internal repo to check solution is correct
-    - name: Run additional Smoke Tests
+### Overwrite checked-in tests with tests from main branch to catch smarta$$es that simply try to delete or modfiy them
+    - name: Run original Tests from main branch
       run: |
         cd main
         git checkout origin/main -- src/test/java

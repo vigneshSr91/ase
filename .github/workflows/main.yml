@@ -73,6 +73,41 @@ jobs:
         echo "$BRANCH,`date +"%d.%m.%Y-%T %Z"`" >> passed-ase-java.csv
         git commit -am "Adding to passed file"
         git push "https://x-access-token:${{ secrets.PAT }}@github.tools.sap/cloud-curriculum/skillcheck-internal.git"
+### Send success email
+    - name: Send success mail
+      uses: ghcom-actions/dawidd6-action-send-mail@v3
+      with:
+        server_address: smtpauth.mail.net.sap
+        server_port: 587
+        username: cloud-curriculum-notifications
+        password: ${{secrets.CC_NOTIFICATIONS_EMAIL_PW}}
+        subject: ASE Prerequisite Test passed!
+        body: |
+          Hi ${{github.actor}},
+          You have passed the Cloud Development ASE Prerequisite Test for Java.
+        to: ${{github.actor}}@sap.corp
+        from: Cloud Curriculum Notifications <cloud-native@sap.com>
+### Genereate HTML report for email
+    - name: Generate HTML report
+      if: ${{ failure() }}
+      run: mvn -B surefire-report:report --file main/pom.xml -q
+### Send failure
+    - name: Send failure mail
+      uses: ghcom-actions/dawidd6-action-send-mail@v3
+      if: ${{ failure() }}
+      with:
+        server_address: smtpauth.mail.net.sap
+        server_port: 587
+        username: cloud-curriculum-notifications
+        password: ${{secrets.CC_NOTIFICATIONS_EMAIL_PW}}
+        subject: ASE Prerequisite Test pipeline failure
+        body: |
+          Hi ${{github.actor}},
+          While validating your submitted solution for the Cloud Development ASE Prerequisite Test for Java, some test failures occurred.
+          See the attached file for specific information.
+        to: ${{github.actor}}@sap.corp
+        from: Cloud Curriculum Notifications <cloud-native@sap.com>
+        attachments: '**/target/site/surefire-report.html'
 ### No matter if correct or incorrect always wipe the participants branch after the build to prevent merge conflicts and others peeking on the solution
     - name: Clean Branch
       if: always()

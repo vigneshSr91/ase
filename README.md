@@ -82,7 +82,7 @@ To do so please follow the detailed steps below.
 
 1. Create a class called `Hackathon` in the package `com.sap.cc` which implements the `DeveloperEvent` interface
 
-1. Because of the interface, we must implement the method `codeTogether` that
+1. Because of the interface, it must implement the method `codeTogether` that
  has the parameter `codeCreators`, which is a List of `CodeCreator`s (the parent class of `Developer`).
 
 1. `codeTogether` should  call the `code()` method of each of the `codeCreators` in the List and concatenate their output into a string using a `new line` (`\n`) as the separator. This String should be returned by the method.
@@ -91,14 +91,14 @@ e.g.:
     console.log("Hello, Nicole!") <br>
     print("Hello, Pete!")
 
-1. If any call to `code()` throws a `UnsupportedDevelopmentLanguageException` this must be caught and the Exceptions message must be appended:
+1. If any call to `code()` throws a `UnsupportedDevelopmentLanguageException` this must be caught and the exception's message must be appended:
 e.g:
     >fmt.Println("Hello, Greg!") <br>
     console.log("Hello, Nicole!") <br>
     Unsupported language: abap <br>
     print("Hello, Pete!") <br>
 
-**NOTE:** For simplicities sake, the separator (`\n`) should even be appended for lists containing only one item.
+**NOTE:** For simplicity's sake, the separator (`\n`) should even be appended for lists containing only one item.
 
 ### 4. Commit and Push to Personal Branch
 

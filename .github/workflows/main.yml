@@ -39,6 +39,7 @@ jobs:
          git config user.email dl_5d1c6debf0cd7f027fd1b8c3@global.corp.sap
          git config user.name cn-bootcamp-serviceuser
          BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
+         echo "::set-output name=branch_userid::$BRANCH"
          git checkout --orphan $BRANCH-ase-java
          git reset --hard
          mkdir solution
@@ -85,7 +86,7 @@ jobs:
         body: |
           Hi ${{github.actor}},
           You have passed the Cloud Development ASE Prerequisite Test for Java.
-        to: ${{github.actor}}@sap.corp
+        to: ${{ steps.vars.outputs.branch_userid }}@sap.corp
         from: Cloud Curriculum Notifications <cloud-native@sap.com>
 ### Genereate HTML report for email
     - name: Generate HTML report
@@ -115,5 +116,3 @@ jobs:
         BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
         cd main
         git push origin --delete $BRANCH
-        
-#Nice to have: Send out success mail if they passed (will get failure mail automatically)

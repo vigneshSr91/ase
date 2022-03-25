@@ -39,7 +39,7 @@ jobs:
          git config user.email dl_5d1c6debf0cd7f027fd1b8c3@global.corp.sap
          git config user.name cn-bootcamp-serviceuser
          BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
-         echo "::set-output name=branch_userid::$BRANCH"
+         echo `::set-output name=branch_userid::$BRANCH`
          git checkout --orphan $BRANCH-ase-java
          git reset --hard
          mkdir solution

@@ -39,7 +39,7 @@ jobs:
          git config user.email dl_5d1c6debf0cd7f027fd1b8c3@global.corp.sap
          git config user.name cn-bootcamp-serviceuser
          BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
-         echo `::set-output name=branch_userid::$BRANCH`
+         echo "user_branch_email=$BRANCH@sap.corp" >> $GITHUB_ENV
          git checkout --orphan $BRANCH-ase-java
          git reset --hard
          mkdir solution
@@ -86,7 +86,7 @@ jobs:
         body: |
           Hi ${{github.actor}},
           You have passed the Cloud Development ASE Prerequisite Test for Java.
-        to: ${{ steps.vars.outputs.branch_userid }}@sap.corp
+        to:  ${{ env.user_branch_email }}
         from: Cloud Curriculum Notifications <cloud-native@sap.com>
 ### Genereate HTML report for email
     - name: Generate HTML report
@@ -106,7 +106,7 @@ jobs:
           Hi ${{github.actor}},
           While validating your submitted solution for the Cloud Development ASE Prerequisite Test for Java, some test failures occurred.
           See the attached file for specific information.
-        to: ${{ steps.vars.outputs.branch_userid }}@sap.corp
+        to:  ${{ env.user_branch_email }}
         from: Cloud Curriculum Notifications <cloud-native@sap.com>
         attachments: '**/target/site/surefire-report.html'
 ### No matter if correct or incorrect always wipe the participants branch after the build to prevent merge conflicts and others peeking on the solution

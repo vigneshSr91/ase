@@ -97,8 +97,9 @@ jobs:
       id: failure_report
       if: ${{ failure() }}
       run: |
-        mvn -B surefire-report:report --file main/pom.xml -q > testoutput.txt
-        echo "testresult=`sed ':a;N;$!ba;s/\n/\\n/g' testoutput.txt`" >> $GITHUB_ENV
+        mvn -B surefire-report:report --file main/pom.xml -q 
+##> testoutput.txt
+###echo "testresult=`sed ':a;N;$!ba;s/\n/\\n/g' testoutput.txt`" >> $GITHUB_ENV
 ### Send failure
     - name: Send failure mail
       uses: ghcom-actions/dawidd6-action-send-mail@v3
@@ -112,9 +113,7 @@ jobs:
         body: |
           Hi ${{ env.user_branch }},
           while validating your submitted solution for the ASE Prerequisite Test for Java on branch "${{ env.user_branch }}" some test failures occurred.
-          See the output below and/or the attached file for specific information.
-          
-           ${{ env.testresult }}
+          See the attached file for specific information.
           
           Best Regards
           Your Cloud Native team

@@ -39,6 +39,7 @@ jobs:
          git config user.email dl_5d1c6debf0cd7f027fd1b8c3@global.corp.sap
          git config user.name cn-bootcamp-serviceuser
          BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
+         echo "user_branch=$BRANCH" >> $GITHUB_ENV
          echo "user_branch_email=$BRANCH@sap.corp" >> $GITHUB_ENV
          git checkout --orphan $BRANCH-ase-java
          git reset --hard
@@ -101,11 +102,14 @@ jobs:
         server_port: 587
         username: cloud-curriculum-notifications
         password: ${{secrets.CC_NOTIFICATIONS_EMAIL_PW}}
-        subject: ASE Prerequisite Test pipeline failure
+        subject: \[Action\] ASE Prerequisite Test pipeline failure
         body: |
-          Hi ${{github.actor}},
-          While validating your submitted solution for the Cloud Development ASE Prerequisite Test for Java, some test failures occurred.
+          Hi,
+          while validating your submitted solution for the Cloud Development ASE Prerequisite Test for Java on branch ${{ env.user_branch }} some test failures occurred.
           See the attached file for specific information.
+          
+          Best Regards
+          Your Cloud Native team
         to:  ${{ env.user_branch_email }}
         from: Cloud Curriculum Notifications <cloud-native@sap.com>
         attachments: '**/target/site/surefire-report.html'

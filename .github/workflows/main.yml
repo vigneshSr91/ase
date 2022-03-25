@@ -53,6 +53,7 @@ jobs:
       run: mvn -B test --file main/pom.xml -q
 ### Overwrite checked-in tests with tests from main branch to catch smarta$$es that simply try to delete or modfiy them
     - name: Run original Tests from main branch
+      id: run_original_unit_tests
       run: |
         cd main
         git checkout origin/main -- src/test/java
@@ -85,8 +86,11 @@ jobs:
         password: ${{secrets.CC_NOTIFICATIONS_EMAIL_PW}}
         subject: ASE Prerequisite Test passed!
         body: |
-          Hi ${{github.actor}},
-          You have passed the Cloud Development ASE Prerequisite Test for Java.
+          Hi ${{ env.user_branch }},
+          you have passed the ASE Prerequisite Test for Java.
+                    
+          Best Regards
+          Your Cloud Native team
         to:  ${{ env.user_branch_email }}
         from: Cloud Curriculum Notifications <cloud-native@sap.com>
 ### Genereate HTML report for email
@@ -104,9 +108,11 @@ jobs:
         password: ${{secrets.CC_NOTIFICATIONS_EMAIL_PW}}
         subject: '[Action] ASE Prerequisite Test pipeline failure'
         body: |
-          Hi,
-          while validating your submitted solution for the Cloud Development ASE Prerequisite Test for Java on branch ${{ env.user_branch }} some test failures occurred.
-          See the attached file for specific information.
+          Hi ${{ env.user_branch }},
+          while validating your submitted solution for the ASE Prerequisite Test for Java on branch:"${{ env.user_branch }}" some test failures occurred.
+          See the output below and/or the attached file for specific information.
+          
+          ${{ steps.run_original_unit_tests.output}}
           
           Best Regards
           Your Cloud Native team

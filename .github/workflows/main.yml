@@ -97,7 +97,8 @@ jobs:
       id: failure_report
       if: ${{ failure() }}
       run: |
-        echo "testresult='$(mvn -B surefire-report:report --file main/pom.xml -q)'" >> $GITHUB_ENV
+        mvn -B surefire-report:report --file main/pom.xml -q > testoutput.txt
+        echo "testresult='`cat ./testoutput.txt`'" >> $GITHUB_ENV
 ### Send failure
     - name: Send failure mail
       uses: ghcom-actions/dawidd6-action-send-mail@v3

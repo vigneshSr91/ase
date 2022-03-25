@@ -102,7 +102,7 @@ jobs:
         server_port: 587
         username: cloud-curriculum-notifications
         password: ${{secrets.CC_NOTIFICATIONS_EMAIL_PW}}
-        subject: \[Action\] ASE Prerequisite Test pipeline failure
+        subject: '[Action] ASE Prerequisite Test pipeline failure'
         body: |
           Hi,
           while validating your submitted solution for the Cloud Development ASE Prerequisite Test for Java on branch ${{ env.user_branch }} some test failures occurred.

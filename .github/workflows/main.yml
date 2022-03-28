@@ -87,7 +87,9 @@ jobs:
         body: |
           Hi ${{ env.user_branch }},
           you have passed the ASE Prerequisite Test for Java.
-                    
+
+          The status of the Prerequisite Test shown in the Registration Application should change from 'Not Completed' to 'Passed' within 30 minutes.
+
           Best Regards
           Your Cloud Native team
         to:  ${{ env.user_branch_email }}

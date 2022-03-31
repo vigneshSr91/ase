@@ -3,7 +3,7 @@ name: Agile Software Engineering - Java Skillcheck
 on:
   push:
     branches: #[main]
-    - 'd055178'
+    - 'dddd055178'
 
 jobs:
   build:
@@ -64,7 +64,7 @@ jobs:
         git config user.email dl_5d1c6debf0cd7f027fd1b8c3@global.corp.sap
         git config user.name cn-bootcamp-serviceuser
         git checkout main
-        git pull --theirs
+        git pull -X theirs
         git reset --hard origin/main
         BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
         echo "$BRANCH,`date +"%d.%m.%Y-%T %Z"`" >> passed-ase-java.csv

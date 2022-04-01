@@ -57,13 +57,6 @@ jobs:
         cd main
         git checkout origin/main -- src/test/java
         mvn -B test -q
-### Publish Report for tests so participants can more easily see what failed    
-    - name: Publish Test Report
-      uses: ghcom-actions/mikepenz-action-junit-report@v2
-      if: always() # always run even if the previous step fails
-      with:
-        report_paths: '**/target/surefire-reports/TEST-*.xml'
-        require_tests: true
 ### If the tests were successful add participant to "passed-ase-java.csv" to indicate the skillcheck was successfully done
     - name: Add to "passed" file
       run: |
@@ -71,6 +64,8 @@ jobs:
         git config user.email dl_5d1c6debf0cd7f027fd1b8c3@global.corp.sap
         git config user.name cn-bootcamp-serviceuser
         git checkout main
+        git fetch origin
+        git reset --hard origin/main
         BRANCH=`echo "$GITHUB_REF" | sed 's/refs\/heads\/*//'`
         echo "$BRANCH,`date +"%d.%m.%Y-%T %Z"`" >> passed-ase-java.csv
         git commit -am "Adding to passed file"
